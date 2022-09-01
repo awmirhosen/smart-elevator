@@ -7,6 +7,7 @@ import {
 } from "../../src/redux/updateButton/updateActions";
 import style from '../modal/modalComponent.module.scss';
 import login from "../../pages/login";
+import {Container} from "react-bootstrap";
 
 const ModalComponent = (props) => {
 
@@ -23,67 +24,90 @@ const ModalComponent = (props) => {
     } = props;
 
 
-    const updateButton = (floor_id, call_btn, status) => {
-
-        console.log(line_index, floor_id, call_btn, status)
-
-        dispatch(requestUpdateSmart(line_index, floor_id, line_index, status));
-    }
-
     const buttons = useSelector(state => state.sidexReducer.buttons)
 
     // console.log(buttons);
 
     const [button, setButton] = useState([])
+    const [fromFloor, setFromFloor] = useState();
 
     useEffect(() => {
 
+        setButton(buttons[1].buttons_floors)
 
         if (floor_index != null && line_index != null) {
-            console.log(buttons[line_index].buttons_floors)
+
             setButton(buttons[line_index].buttons_floors);
+            console.log(buttons[line_index].buttons_floors)
+
+            if (localProject_id == 2) {
+                const result = buttons.filter(item => item.floor_index_from == floor_index);
+                setFromFloor(result)
+
+            }else {
+                const result = button.filter(item => item.floor_index == floor_index);
+                setFromFloor(result)
+            }
+
         }
 
     }, [floor_index, line_index, buttons])
 
-    const [fromFloor, setFromFloor] = useState();
-
-    if (localProject_id == 2) {
-        useEffect(() => {
-                  const result = buttons.filter(item => item.floor_index_from == floor_index);
-                  setFromFloor(result)
-        }, [floor_index]);
-
-    }
-
-    const destinationHandler = (floor_id_from, floor_id_to, status) => {
-        console.log(floor_id_from, floor_id_to, status)
-        if (floor_id_from !== undefined) {
-            console.log('fff')
-        }else {
-            console.log('bbb')
-        }
-        // console.log(floor_id_from, floor_id_to, status)
-        // dispatch(requestUpdateSmart(floor_id_from, floor_id_to, status));
-    }
 
 
     return (
         <div
-            onClick={() => ClickSettingFllorHandler(false)}>
+            >
             <Modal
                 show={openModal}
+                centered
+                onHide={ClickSettingFllorHandler}
             >
-                <Modal.Dialog
+                <Modal.Header closeButton style={{ backgroundColor : 'rgba(39, 83, 47, 0.55)' }} />
+
+
+                <Modal.Body
+                    style={{ backgroundColor : 'rgba(39, 83, 47, 0.55)' }}
                 >
+
                     <div className={'d-flex justify-content-around p-4'}>
                         {
                         localProject_id === '1' ? (
-                        <span
-                        className={style.buttonFloor}
-                        >
-                        ON
-                        </span>
+                        <>
+                            {
+                                fromFloor !== undefined ? (
+                                    <>
+                                        {
+                                            fromFloor.map((item, index) => (
+                                                <div key={index}>
+                                                    {item.is_call_button == 1 ? (
+                                                        <div
+                                                            className={style.custom1}
+                                                            style={{ backgroundColor: item.status === 1 ? 'green' : 'red' }}
+                                                            onClick={() => dispatch(requestUpdateSmart(line_index, item.floor_id, item.is_call_button, item.status))}
+                                                        >
+                                                            From Floor
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className={style.custom1}
+                                                            style={{ backgroundColor: item.status === 1 ? 'green' : 'red' }}
+                                                            onClick={() => dispatch(requestUpdateSmart(line_index, item.floor_id, item.is_call_button, item.status))}
+                                                        >
+                                                            From Elevator
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))
+                                        }
+                                    </>
+                                ) : (
+                                    <div>
+                                        Welcome Mow Choose again
+                                    </div>
+                                )
+                            }
+                        </>
                             ) : (
                                 <>
                                     {
@@ -118,7 +142,8 @@ const ModalComponent = (props) => {
                         }
                     </div>
 
-                </Modal.Dialog>
+
+                </Modal.Body>
 
             </Modal>
         </div>

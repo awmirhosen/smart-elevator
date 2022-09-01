@@ -46,7 +46,6 @@ export const requestUpdateDestination = (floorIdFrom, floorIdTo, status) => {
                     console.log(res.data)
 
                 })
-
         }
         catch (erorr) {
             console.log(error)

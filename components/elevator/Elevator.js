@@ -1,9 +1,13 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import style from '../Sidex/sidex.module.scss';
 import Floor from "./Floor";
 
 const Elevator = ({ line, ChangeLine, lineColumn,ClickSettingFllorHandler }) => {
+
+    const initialState = {line_id: 3, line_name: 'line A', line_index: 1, capacity: 4, line_status: 'e'}
+
+    const [lineValue, setLineValue] = useState(initialState);
 
     let floors = useSelector(state => state.sidexReducer.floors)
 
@@ -22,13 +26,23 @@ const Elevator = ({ line, ChangeLine, lineColumn,ClickSettingFllorHandler }) => 
         zIndex: 50,
     };
 
+
+
+    useEffect(() => {
+        if (line !== undefined ){
+            setLineValue(line)
+        }
+
+    }, [line]);
+
+
     return (
         <>
             {/* col-xl-3 col-lg-4 col-md-6 col-sm-12 */}
             <div className={`${style.rowSidex}`}>
                 <div className={style.lineSelect}>
                     <select
-                        value={line.line_id}
+                        // value={lineValue.line_id}
                         onChange={(e) => ChangeLine(e.target.value, lineColumn)}
                     >
                         {
@@ -51,7 +65,7 @@ const Elevator = ({ line, ChangeLine, lineColumn,ClickSettingFllorHandler }) => 
                             <span className={[
                                 style.settingRdy1,
                                 style.settingRdy
-                            ].join(' ')}></span>
+                            ].join(' ')}> </span>
                         </div>
                         <div>
                             {line && line.line_status} {line && line.line_name}
@@ -62,7 +76,7 @@ const Elevator = ({ line, ChangeLine, lineColumn,ClickSettingFllorHandler }) => 
                             <span className={[
                                 style.settingRdy2,
                                 style.settingRdy
-                            ].join(' ')}></span>
+                            ].join(' ')}> </span>
                         </div>
                         <div>
                             -3
@@ -113,7 +127,7 @@ const Elevator = ({ line, ChangeLine, lineColumn,ClickSettingFllorHandler }) => 
                                 return (
                                     <Fragment key={key + lineColumn}>
                                         <Floor
-                                        line_index={line.line_id}
+                                        line_index={lineValue.line_id}
                                          floor={value}
                                           ClickSettingFllorHandler={ClickSettingFllorHandler} />
                                     </Fragment>

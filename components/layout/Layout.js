@@ -2,6 +2,8 @@ import React, { Fragment, useState } from "react";
 import Image from "next/image";
 import style from '../layout/layout.module.scss';
 import { useRouter } from "next/router";
+import Logout from "../Logout/Logout";
+
 
 const Layout = ({ children }) => {
 
@@ -9,8 +11,14 @@ const Layout = ({ children }) => {
 
     const [disActiveMenu, setDisActiveMenu] = useState(1);
 
+    const logout = () => {
+        window.localStorage.clear()
+        router.push(`/login`);
+    }
+
     return (
         <div className={'d-flex'}>
+            {/*<Logout />*/}
             <div className={`${style.bg1} `}>
                 <div className={`${style.layoutTop}`}></div>
                 <div className={style.bg4}>
@@ -47,6 +55,11 @@ const Layout = ({ children }) => {
                         <span
                             className={`${style.menuIcon5}`}
                         ></span>
+                    </div>
+                    <div>
+                        <span
+                            style={{color : 'white'}} onClick={logout}
+                        >خروج</span>
                     </div>
                 </div>
             </div>
@@ -94,6 +107,11 @@ const Layout = ({ children }) => {
                     <span
                         className={`${style.menuIcon5}`}
                     ></span>
+                </div>
+                <div>
+                        <span
+                            style={{color : 'white'}} onClick={logout}
+                        >خروج</span>
                 </div>
             </div>
         </div>

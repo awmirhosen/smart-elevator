@@ -214,6 +214,7 @@ const Sidex = () => {
                     ClickSettingFllorHandler={ClickSettingFllorHandler}
                     floor_index={floor_index}
                     line_index={line_index}
+                    localProject_id = {localProject_id}
                 />
                 {
                     numberOfLines >= 1 &&
@@ -249,6 +250,7 @@ const Sidex = () => {
                     ClickSettingFllorHandler={ClickSettingFllorHandler}
                     floor_index={floor_index}
                     line_index={line_index}
+                    localProject_id = {localProject_id}
                 />
                 {
                     numberOfLines >= 1 &&
@@ -295,6 +297,7 @@ const Sidex = () => {
                     ClickSettingFllorHandler={ClickSettingFllorHandler}
                     floor_index={floor_index}
                     line_index={line_index}
+                    localProject_id = {localProject_id}
                 />
                 {numberOfLines >= 1 &&
                     <Fragment>
